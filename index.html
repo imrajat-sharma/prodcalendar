@@ -17,8 +17,17 @@
         <span id="live-time">--:--</span>
       </div>
       <div class="top-actions">
-        <button class="icon-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
-        <button class="primary-button compact-add" id="quick-add"><i data-lucide="plus"></i><span>New event</span></button>
+        <button
+          class="icon-button"
+          id="theme-toggle"
+          title="Toggle theme"
+          aria-label="Toggle theme"
+        >
+          <i data-lucide="moon"></i>
+        </button>
+        <button class="primary-button compact-add" id="quick-add">
+          <i data-lucide="plus"></i><span>New event</span>
+        </button>
       </div>
     </header>
 
@@ -30,73 +39,187 @@
             <h2 id="month-title">October 2026</h2>
           </div>
           <div class="calendar-controls">
-            <button class="icon-button" id="prev-month" aria-label="Previous month"><i data-lucide="chevron-left"></i></button>
+            <button
+              class="icon-button"
+              id="prev-month"
+              aria-label="Previous month"
+            >
+              <i data-lucide="chevron-left"></i>
+            </button>
             <button class="today-button" id="today-button">Today</button>
-            <button class="icon-button" id="next-month" aria-label="Next month"><i data-lucide="chevron-right"></i></button>
+            <button class="icon-button" id="next-month" aria-label="Next month">
+              <i data-lucide="chevron-right"></i>
+            </button>
           </div>
         </div>
         <div class="weekday-row" aria-hidden="true">
-          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span
+          ><span>Thu</span><span>Fri</span><span>Sat</span>
         </div>
         <div class="calendar-grid" id="calendar-grid"></div>
-        <p class="calendar-tip"><i data-lucide="mouse-pointer-2"></i> Select a day to see its schedule. Press <kbd>N</kbd> to add an event.</p>
+        <p class="calendar-tip">
+          <i data-lucide="mouse-pointer-2"></i> Select a day to see its
+          schedule. Press <kbd>N</kbd> to add an event.
+        </p>
       </section>
 
       <aside class="side-panel">
         <section class="agenda-card">
-          <div class="section-title"><div><p class="eyebrow" id="selected-day-label">SELECTED DAY</p><h2 id="selected-date-title">Today</h2></div><button class="icon-button" id="add-for-day" aria-label="Add to selected day" title="Add to this day"><i data-lucide="plus"></i></button></div>
+          <div class="section-title">
+            <div>
+              <p class="eyebrow" id="selected-day-label">SELECTED DAY</p>
+              <h2 id="selected-date-title">Today</h2>
+            </div>
+            <button
+              class="icon-button"
+              id="add-for-day"
+              aria-label="Add to selected day"
+              title="Add to this day"
+            >
+              <i data-lucide="plus"></i>
+            </button>
+          </div>
           <div class="agenda-list" id="agenda-list"></div>
         </section>
         <section class="festival-card">
-          <div class="section-title"><div><p class="eyebrow">INDIA CALENDAR</p><h3>Holidays, ready when you are</h3></div><span class="status-pill" id="festival-status">Ready</span></div>
-          <p>Add India’s public holidays for the year currently on screen.</p>
-          <button class="outline-button" id="fetch-festivals"><i data-lucide="landmark"></i> Add holidays</button>
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">US CALENDAR</p>
+              <h3>Holidays, ready when you are</h3>
+            </div>
+            <span class="status-pill" id="festival-status">Ready</span>
+          </div>
+          <p>Add US public holidays for the year currently on screen.</p>
+          <button class="outline-button" id="fetch-festivals">
+            <i data-lucide="landmark"></i> Add holidays
+          </button>
         </section>
       </aside>
     </main>
 
     <div class="modal-backdrop" id="modal-backdrop" hidden>
-      <section class="entry-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <button class="modal-close" id="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+      <section
+        class="entry-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <button class="modal-close" id="modal-close" aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
         <p class="eyebrow" id="modal-kicker">NEW EVENT</p>
         <h2 id="modal-title">What do you need to remember?</h2>
         <form id="entry-form">
           <div class="type-tabs" role="tablist">
-            <button type="button" class="type-tab active" data-type="event"><i data-lucide="calendar-days"></i> Event</button>
-            <button type="button" class="type-tab" data-type="note"><i data-lucide="sticky-note"></i> Note</button>
+            <button type="button" class="type-tab active" data-type="event">
+              <i data-lucide="calendar-days"></i> Event
+            </button>
+            <button type="button" class="type-tab" data-type="note">
+              <i data-lucide="sticky-note"></i> Note
+            </button>
           </div>
-          <label>Title<input id="entry-title" maxlength="80" required placeholder="e.g. Morning walk" autocomplete="off" /></label>
+          <label
+            >Title<input
+              id="entry-title"
+              maxlength="80"
+              required
+              placeholder="e.g. Morning walk"
+              autocomplete="off"
+          /></label>
           <div class="form-row">
             <label>Date<input id="entry-date" type="date" required /></label>
             <label>Time <input id="entry-time" type="time" /></label>
           </div>
           <div class="form-row label-row details-row">
-            <label>Alias<input id="entry-label" maxlength="24" placeholder="e.g. Deep work" /></label>
-            <label>Icon
+            <label
+              >Alias<input
+                id="entry-label"
+                maxlength="24"
+                placeholder="e.g. Deep work"
+            /></label>
+            <label
+              >Icon
               <select id="entry-icon">
-                <option value="✦">✦ Star</option><option value="☀️">☀️ Morning</option><option value="💼">💼 Work</option><option value="♥">♥ Wellness</option><option value="✎">✎ Idea</option><option value="☕">☕ Break</option><option value="🎉">🎉 Celebrate</option>
+                <option value="✦">✦ Star</option>
+                <option value="☀️">☀️ Morning</option>
+                <option value="💼">💼 Work</option>
+                <option value="♥">♥ Wellness</option>
+                <option value="✎">✎ Idea</option>
+                <option value="☕">☕ Break</option>
+                <option value="🎉">🎉 Celebrate</option>
               </select>
             </label>
           </div>
           <label class="color-label">Colour</label>
           <div class="color-picker" id="color-picker">
-            <button type="button" class="color-choice coral active" data-color="coral" aria-label="Coral"></button><button type="button" class="color-choice violet" data-color="violet" aria-label="Violet"></button><button type="button" class="color-choice teal" data-color="teal" aria-label="Teal"></button><button type="button" class="color-choice gold" data-color="gold" aria-label="Gold"></button>
+            <button
+              type="button"
+              class="color-choice coral active"
+              data-color="coral"
+              aria-label="Coral"
+            ></button
+            ><button
+              type="button"
+              class="color-choice violet"
+              data-color="violet"
+              aria-label="Violet"
+            ></button
+            ><button
+              type="button"
+              class="color-choice teal"
+              data-color="teal"
+              aria-label="Teal"
+            ></button
+            ><button
+              type="button"
+              class="color-choice gold"
+              data-color="gold"
+              aria-label="Gold"
+            ></button>
           </div>
-          <details class="more-details"><summary>Add details (optional)</summary><label class="details-label">Notes <textarea id="entry-details" maxlength="280" placeholder="A few words for later…"></textarea></label></details>
-          <button class="primary-button submit-button" type="submit">Add event <i data-lucide="arrow-right"></i></button>
+          <details class="more-details">
+            <summary>Add details (optional)</summary>
+            <label class="details-label"
+              >Notes
+              <textarea
+                id="entry-details"
+                maxlength="280"
+                placeholder="A few words for later…"
+              ></textarea>
+            </label>
+          </details>
+          <button class="primary-button submit-button" type="submit">
+            Add event <i data-lucide="arrow-right"></i>
+          </button>
         </form>
       </section>
     </div>
     <div class="modal-backdrop detail-backdrop" id="detail-backdrop" hidden>
-      <article class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
-        <button class="modal-close" id="detail-close" aria-label="Close details"><i data-lucide="x"></i></button>
-        <div class="detail-cover" id="detail-cover"><span class="detail-icon" id="detail-icon">✦</span><span class="detail-kind" id="detail-kind">Event</span></div>
+      <article
+        class="detail-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="detail-title"
+      >
+        <button
+          class="modal-close"
+          id="detail-close"
+          aria-label="Close details"
+        >
+          <i data-lucide="x"></i>
+        </button>
+        <div class="detail-cover" id="detail-cover">
+          <span class="detail-icon" id="detail-icon">✦</span
+          ><span class="detail-kind" id="detail-kind">Event</span>
+        </div>
         <div class="detail-content">
           <p class="eyebrow" id="detail-date">TODAY</p>
           <h2 id="detail-title">Event title</h2>
           <div class="detail-meta" id="detail-meta"></div>
           <div class="detail-body" id="detail-body"></div>
-          <button class="important-button" id="mark-important"><i data-lucide="star"></i><span>Mark as important</span></button>
+          <button class="important-button" id="mark-important">
+            <i data-lucide="star"></i><span>Mark as important</span>
+          </button>
         </div>
       </article>
     </div>

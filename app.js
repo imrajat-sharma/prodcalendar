@@ -297,31 +297,26 @@ async function fetchFestivals() {
   status.textContent = "Fetching";
   button.disabled = true;
   try {
-    const endpoint = `https://calendar.google.com/calendar/ical/en.indian%23holiday%40group.v.calendar.google.com/public/basic.ics`;
-    const response = await fetch(endpoint);
-    if (!response.ok) throw new Error("Could not reach calendar");
-    const ics = await response.text();
-    const blocks = ics.match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) || [];
-    const parsed = blocks
-      .map((block) => {
-        const date = (block.match(/DTSTART(?:;VALUE=DATE)?:([0-9]{8})/) ||
-          [])[1];
-        const title = (block.match(/SUMMARY:(.*)/) || [])[1];
-        if (!date || !title) return null;
-        const parsedDate = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
-        return {
-          id: `festival-${parsedDate}-${title}`,
-          date: parsedDate,
-          title: title.replace(/\\,/g, ",").replace(/\\n/g, " "),
-          kind: "festival",
-          type: "festival",
-          icon: "✦",
-          color: "#d7a12e",
-          label: "India",
-        };
-      })
-      .filter(Boolean)
-      .filter((item) => item.date.startsWith(`${year}-`));
+    const response = await fetch(
+      `https://api.api-ninjas.com/v1/publicholidays?country=IND&year=${year}`,
+      { headers: { "X-Api-Key": "C7VCFKlSDpL5UZ3OmdSXT3kseYu7Nkxd0Y4HJXRO" } },
+    );
+    if (!response.ok)
+      throw new Error(`Holiday API returned HTTP ${response.status}`);
+    const holidays = await response.json();
+    if (!Array.isArray(holidays) || !holidays.length) {
+      throw new Error("Holiday API returned no holidays");
+    }
+    const parsed = holidays.map((item) => ({
+      id: `holiday-${item.date}-${item.name}`,
+      date: item.date,
+      title: item.name,
+      kind: "festival",
+      type: "festival",
+      icon: "✦",
+      color: "#d7a12e",
+      label: "US",
+    }));
     festivals = [
       ...festivals.filter((item) => !item.date.startsWith(`${year}-`)),
       ...parsed,
@@ -332,37 +327,9 @@ async function fetchFestivals() {
     renderAgenda();
     showToast(`${parsed.length} holidays added`);
   } catch (error) {
-    // Some browsers block the public Google Calendar ICS file. Nager's open
-    // India holiday feed makes the feature still useful in that case.
-    try {
-      const response = await fetch(
-        `https://date.nager.at/api/v3/PublicHolidays/${year}/IN`,
-      );
-      if (!response.ok) throw new Error("Holiday feed unavailable");
-      const holidays = await response.json();
-      const parsed = holidays.map((item) => ({
-        id: `holiday-${item.date}-${item.name}`,
-        date: item.date,
-        title: item.localName || item.name,
-        kind: "festival",
-        type: "festival",
-        icon: "✦",
-        color: "#d7a12e",
-        label: "India",
-      }));
-      festivals = [
-        ...festivals.filter((item) => !item.date.startsWith(`${year}-`)),
-        ...parsed,
-      ];
-      save();
-      status.textContent = `${parsed.length} added`;
-      renderCalendar();
-      renderAgenda();
-      showToast(`${parsed.length} holidays added`);
-    } catch (fallbackError) {
-      status.textContent = "Try again";
-      showToast("Could not load holidays. Please try again.");
-    }
+    console.error("Could not load holidays:", error);
+    status.textContent = "Try again";
+    showToast("Could not load holidays. Check the API key and try again.");
   } finally {
     button.disabled = false;
   }
