@@ -35,8 +35,11 @@ function escapeHTML(value = '') { const el = document.createElement('div'); el.t
 function itemColor(item) { return item.color || colors[item.colorName] || '#d7a12e'; }
 function itemAlias(item) { return item.kind === 'festival' ? item.title : (item.label || item.title); }
 function itemPreview(item) {
-  const fallback = `${item.time ? `${item.time} · ` : ''}${item.title}${item.label && item.kind !== 'festival' ? ` · ${item.label}` : ''}`;
-  return (item.details || fallback).replace(/\s+/g, ' ').trim().slice(0, 120);
+  return [item.time, item.title, item.kind !== 'festival' && item.label, item.details]
+    .filter(Boolean)
+    .join(' · ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 function itemById(id) { return entries.find(item => item.id === id) || festivals.find(item => item.id === id); }
 function showToast(message) {
