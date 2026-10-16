@@ -372,8 +372,9 @@ summary:focus-visible {
   height: 26px;
   place-items: center;
   border-radius: 50%;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 .day-cell.today .day-number {
   color: #fff;
@@ -1157,7 +1158,7 @@ body[data-theme="dark"] .important-button.is-important {
   .day-number {
     width: 24px;
     height: 24px;
-    font-size: 12px;
+    font-size: 13px;
   }
   .day-indicators {
     gap: 2px;
