@@ -197,6 +197,7 @@
     <div class="modal-backdrop detail-backdrop" id="detail-backdrop" hidden>
       <article
         class="detail-modal"
+        id="detail-modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="detail-title"
@@ -209,7 +210,13 @@
           <i data-lucide="x"></i>
         </button>
         <div class="detail-cover" id="detail-cover">
-          <span class="detail-icon" id="detail-icon">✦</span
+          <span class="detail-icon">
+            <i
+              id="detail-type-icon"
+              data-lucide="calendar-days"
+              aria-hidden="true"
+            ></i>
+            <span id="detail-icon">✦</span> </span
           ><span class="detail-kind" id="detail-kind">Event</span>
         </div>
         <div class="detail-content">

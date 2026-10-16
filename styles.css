@@ -1,19 +1,21 @@
 :root {
-  --blue: #007aff;
-  --blue-pressed: #0065d1;
-  --ink: #1d1d1f;
-  --muted: #6e6e73;
-  --surface: rgba(255, 255, 255, 0.78);
-  --surface-solid: #fff;
-  --secondary: #f2f2f7;
-  --line: rgba(60, 60, 67, 0.16);
-  --soft-line: rgba(60, 60, 67, 0.1);
-  --shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --blue: #687957;
+  --blue-pressed: #4f6246;
+  --ink: #34382f;
+  --muted: #74786b;
+  --surface: rgba(250, 249, 243, 0.88);
+  --surface-solid: #faf9f3;
+  --secondary: #edeee5;
+  --line: rgba(76, 81, 63, 0.17);
+  --soft-line: rgba(76, 81, 63, 0.1);
+  --shadow: 0 12px 32px rgba(58, 62, 48, 0.09);
   color-scheme: light;
   font:
     100%/1.45 -apple-system,
     BlinkMacSystemFont,
+    "SF Pro Display",
     "SF Pro Text",
+    "Helvetica Neue",
     "Segoe UI",
     sans-serif;
 }
@@ -24,7 +26,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  background: linear-gradient(135deg, #f6f7fb 0%, #eef4ff 100%);
+  background: linear-gradient(135deg, #f1efe6 0%, #e7ecdf 100%);
   overflow-x: hidden;
 }
 button,
@@ -41,7 +43,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-  outline: 3px solid rgba(0, 122, 255, 0.35);
+  outline: 3px solid rgba(104, 121, 87, 0.38);
   outline-offset: 2px;
 }
 
@@ -54,8 +56,8 @@ summary:focus-visible {
   align-items: center;
   justify-content: space-between;
   padding: 0 clamp(18px, 4vw, 56px);
-  background: rgba(255, 255, 255, 0.72);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.68);
+  background: rgba(250, 249, 243, 0.82);
+  border-bottom: 1px solid rgba(93, 98, 77, 0.12);
   backdrop-filter: saturate(180%) blur(20px);
 }
 .brand {
@@ -76,7 +78,7 @@ summary:focus-visible {
   color: #fff;
   background: var(--blue);
   border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0, 122, 255, 0.26);
+  box-shadow: 0 3px 8px rgba(82, 101, 68, 0.24);
 }
 .brand-mark svg {
   width: 17px;
@@ -87,17 +89,28 @@ summary:focus-visible {
   transform: translateX(-50%);
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 10px;
+  padding: 6px 11px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--surface-solid) 78%, transparent);
+  box-shadow: 0 3px 10px rgba(58, 62, 48, 0.06);
   color: var(--muted);
-  font-size: 13px;
+  font-size: 11px;
 }
 .clock span:first-child {
   font-weight: 600;
-  color: var(--ink);
+  color: var(--muted);
 }
 .clock span:last-child {
   font-variant-numeric: tabular-nums;
-  font-size: 12px;
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  line-height: 1;
 }
 .top-actions,
 .calendar-controls {
@@ -121,7 +134,7 @@ summary:focus-visible {
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.64);
+  background: rgba(250, 249, 243, 0.72);
   transition:
     background 0.18s ease,
     transform 0.18s ease,
@@ -160,11 +173,11 @@ summary:focus-visible {
 .primary-button {
   color: #fff;
   background: var(--blue);
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.22);
+  box-shadow: 0 4px 12px rgba(82, 101, 68, 0.2);
 }
 .primary-button:hover {
   background: var(--blue-pressed);
-  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.28);
+  box-shadow: 0 6px 16px rgba(82, 101, 68, 0.25);
 }
 .primary-button svg,
 .outline-button svg {
@@ -188,7 +201,7 @@ summary:focus-visible {
 .calendar-panel,
 .agenda-card,
 .festival-card {
-  border: 1px solid rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 20px;
   background: var(--surface);
   box-shadow: var(--shadow);
@@ -239,13 +252,13 @@ summary:focus-visible {
   padding: 0 11px;
   border: 1px solid var(--line);
   border-radius: 9px;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(250, 249, 243, 0.72);
   font-size: 13px;
   font-weight: 600;
 }
 .today-button:hover {
   color: var(--blue);
-  border-color: rgba(0, 122, 255, 0.3);
+  border-color: rgba(104, 121, 87, 0.34);
 }
 .weekday-row,
 .calendar-grid {
@@ -269,13 +282,13 @@ summary:focus-visible {
   text-align: center;
 }
 .weekday-row span:first-child {
-  color: #cf3e48;
-  background: #fff1f2;
+  color: #98614f;
+  background: #f4e9e3;
 }
 .weekday-row span:last-child {
   border-right: 0;
-  color: #5d60c9;
-  background: #f1f1ff;
+  color: #667664;
+  background: #e9eee5;
 }
 .calendar-grid {
   padding: 0;
@@ -295,7 +308,7 @@ summary:focus-visible {
   border-bottom: 1px solid var(--line);
   border-radius: 0;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(116, 121, 99, 0.035);
   text-align: left;
   transition:
     background 0.16s ease,
@@ -361,7 +374,7 @@ summary:focus-visible {
   width: 100%;
   min-width: 0;
   height: 19px;
-  overflow: hidden;
+  overflow: visible;
   padding: 0 4px;
   border: 0;
   border-radius: 4px;
@@ -499,7 +512,7 @@ kbd {
   padding: 11px 8px 11px 11px;
   border-left: 3px solid var(--entry-color);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(250, 249, 243, 0.72);
 }
 .agenda-item-icon {
   width: 18px;
@@ -546,31 +559,31 @@ kbd {
   width: 14px;
 }
 .festival-card {
-  background: #eef6ff;
-  border-color: rgba(0, 122, 255, 0.12);
+  background: #e9eee3;
+  border-color: rgba(104, 121, 87, 0.18);
   box-shadow: none;
 }
 .festival-card p {
   margin: 11px 0 14px;
-  color: #526477;
+  color: #58634f;
   font-size: 13px;
   line-height: 1.45;
 }
 .outline-button {
   min-height: 34px;
   padding: 0 11px;
-  color: #075cc0;
-  background: rgba(0, 122, 255, 0.1);
+  color: #4e6346;
+  background: rgba(104, 121, 87, 0.13);
   font-size: 12px;
 }
 .outline-button:hover {
-  background: rgba(0, 122, 255, 0.16);
+  background: rgba(104, 121, 87, 0.2);
 }
 .status-pill {
   padding: 4px 7px;
   border-radius: 99px;
-  color: #075cc0;
-  background: rgba(0, 122, 255, 0.1);
+  color: #4e6346;
+  background: rgba(104, 121, 87, 0.13);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -598,7 +611,7 @@ kbd {
   padding: 26px;
   border-radius: 18px;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--surface-solid);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
 }
 .modal-close {
@@ -644,7 +657,7 @@ kbd {
 }
 .type-tab.active {
   color: var(--ink);
-  background: #fff;
+  background: var(--surface-solid);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   font-weight: 600;
 }
@@ -667,7 +680,7 @@ textarea {
   border: 1px solid var(--line);
   border-radius: 9px;
   color: var(--ink);
-  background: #fff;
+  background: var(--surface-solid);
   font-size: 14px;
   outline: 0;
   transition:
@@ -678,7 +691,7 @@ input:focus,
 select:focus,
 textarea:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(104, 121, 87, 0.17);
 }
 textarea {
   min-height: 70px;
@@ -732,7 +745,7 @@ textarea {
   margin-bottom: 13px;
 }
 .details-label {
-  color: #3a3a3c;
+  color: var(--ink);
 }
 .submit-button {
   width: 100%;
@@ -746,9 +759,16 @@ textarea {
   width: min(100%, 640px);
   max-height: 92vh;
   overflow: auto;
+  border: 1px solid
+    color-mix(in srgb, var(--detail-color, var(--blue)) 30%, var(--line));
+  border-top: 5px solid var(--detail-color, var(--blue));
   border-radius: 20px;
   color: var(--ink);
-  background: var(--surface-solid);
+  background: color-mix(
+    in srgb,
+    var(--surface-solid) 94%,
+    var(--detail-color, var(--blue))
+  );
   box-shadow: 0 28px 78px rgba(0, 0, 0, 0.28);
 }
 .detail-cover {
@@ -765,14 +785,20 @@ textarea {
   );
 }
 .detail-icon {
-  display: grid;
+  display: flex;
   width: 44px;
   height: 44px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   border: 1px solid rgba(255, 255, 255, 0.36);
   border-radius: 13px;
   background: rgba(255, 255, 255, 0.16);
   font-size: 23px;
+}
+.detail-icon svg {
+  width: 17px;
+  height: 17px;
 }
 .detail-kind {
   padding-bottom: 3px;
@@ -781,6 +807,11 @@ textarea {
 }
 .detail-content {
   padding: 27px 30px 30px;
+  background: color-mix(
+    in srgb,
+    var(--surface-solid) 92%,
+    var(--detail-color, var(--blue))
+  );
 }
 .detail-content h2 {
   margin: 0 32px 15px 0;
@@ -811,7 +842,7 @@ textarea {
 .detail-body {
   min-height: 132px;
   padding-top: 2px;
-  color: #35353a;
+  color: var(--ink);
   font-size: 16px;
   line-height: 1.72;
 }
@@ -1002,7 +1033,18 @@ body[data-theme="dark"] .important-button.is-important {
     height: 59px;
   }
   .clock {
+    left: 56%;
+    display: flex;
+    padding: 5px 7px;
+    border-radius: 9px;
+  }
+  .clock span:first-child {
     display: none;
+  }
+  .clock span:last-child {
+    padding-left: 0;
+    border-left: 0;
+    font-size: 14px;
   }
   .compact-add span {
     display: none;

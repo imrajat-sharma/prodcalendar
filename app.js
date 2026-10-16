@@ -17,18 +17,18 @@ const colors = {
   gold: "#d8a12d",
 };
 const monthPalettes = [
-  { accent: "#007aff", tint: "#e8f2ff", header: "#f1f7ff" },
-  { accent: "#d46a3a", tint: "#fff0e8", header: "#fff6f1" },
-  { accent: "#2f9b72", tint: "#e8f8f0", header: "#f1fbf6" },
-  { accent: "#7b62d8", tint: "#f0edff", header: "#f7f5ff" },
-  { accent: "#d45b83", tint: "#ffedf3", header: "#fff5f8" },
-  { accent: "#218fa8", tint: "#e8f8fb", header: "#f1fbfd" },
-  { accent: "#be7d13", tint: "#fff5df", header: "#fffaf0" },
-  { accent: "#3d7cce", tint: "#ebf3ff", header: "#f4f8ff" },
-  { accent: "#a15fbb", tint: "#f9edfd", header: "#fcf6fe" },
-  { accent: "#b66b4f", tint: "#fff0eb", header: "#fff7f4" },
-  { accent: "#46855d", tint: "#ecf7ed", header: "#f4fbf5" },
-  { accent: "#4674ba", tint: "#edf3ff", header: "#f5f8ff" },
+  { accent: "#687957", tint: "#e7ebdf", header: "#f0f2ea" },
+  { accent: "#a66448", tint: "#f3e7df", header: "#f7efe9" },
+  { accent: "#5f806a", tint: "#e4eee5", header: "#eef4ee" },
+  { accent: "#5c7773", tint: "#e5eeeb", header: "#f0f5f3" },
+  { accent: "#a66c67", tint: "#f2e7e4", header: "#f8f0ee" },
+  { accent: "#587e82", tint: "#e4eeed", header: "#eef5f4" },
+  { accent: "#9a783f", tint: "#f2ecdd", header: "#f8f4e9" },
+  { accent: "#63734e", tint: "#e9ecdf", header: "#f1f3e9" },
+  { accent: "#8b7059", tint: "#eee8df", header: "#f5f1eb" },
+  { accent: "#4f7565", tint: "#e3ece7", header: "#eef4f0" },
+  { accent: "#9a644e", tint: "#f2e7df", header: "#f8f0ea" },
+  { accent: "#687d79", tint: "#e6edeb", header: "#f0f4f2" },
 ];
 let entries = JSON.parse(localStorage.getItem("daymark-entries") || "[]");
 let festivals = JSON.parse(localStorage.getItem("daymark-festivals") || "[]");
@@ -206,8 +206,16 @@ function openDetail(id, origin) {
       : item.type === "note"
         ? "Note"
         : "Event";
-  $("#detail-cover").style.setProperty("--detail-color", itemColor(item));
+  $("#detail-modal").style.setProperty("--detail-color", itemColor(item));
   $("#detail-icon").textContent = item.icon || "✦";
+  $("#detail-type-icon").setAttribute(
+    "data-lucide",
+    item.kind === "festival"
+      ? "party-popper"
+      : item.type === "note"
+        ? "sticky-note"
+        : "calendar-days",
+  );
   $("#detail-kind").textContent = kind;
   $("#detail-date").textContent = parseKey(item.date).toLocaleDateString(
     "en-IN",
@@ -280,8 +288,10 @@ function updateClock() {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: false,
-  }).format(now);
+    hour12: true,
+  })
+    .format(now)
+    .replace(/\b(am|pm)\b/i, (period) => period.toUpperCase());
   $("#live-date").textContent = new Intl.DateTimeFormat("en-IN", {
     timeZone: "Asia/Kolkata",
     weekday: "short",
@@ -315,7 +325,7 @@ async function fetchFestivals() {
       type: "festival",
       icon: "✦",
       color: "#d7a12e",
-      label: "US",
+      label: "IND",
     }));
     festivals = [
       ...festivals.filter((item) => !item.date.startsWith(`${year}-`)),
