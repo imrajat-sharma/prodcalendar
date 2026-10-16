@@ -10,6 +10,8 @@ let selectedColor = "coral";
 let lastFocusedElement = null;
 let currentDetailId = null;
 let toastTimer;
+let backgroundKind = localStorage.getItem("daymark-background-kind") || "gradient";
+let backgroundImage = localStorage.getItem("daymark-background-image") || "";
 const colors = {
   coral: "#e97863",
   violet: "#8e77bc",
@@ -113,7 +115,7 @@ function renderCalendar() {
     const cellFestivals = festivals.filter((item) => item.date === dateKey);
     const displayItems = [...cellEntries, ...cellFestivals];
     const cell = document.createElement("div");
-    cell.className = `day-cell ${displayItems.length ? "has-items" : ""} ${date.getMonth() !== month ? "muted" : ""} ${sameDay(date, today) ? "today" : ""} ${sameDay(date, selectedDate) ? "selected" : ""}`;
+    cell.className = `day-cell ${slot % 7 === 0 ? "sunday" : ""} ${displayItems.length ? "has-items" : ""} ${date.getMonth() !== month ? "muted" : ""} ${sameDay(date, today) ? "today" : ""} ${sameDay(date, selectedDate) ? "selected" : ""}`;
     cell.setAttribute("role", "gridcell");
     cell.setAttribute(
       "aria-label",
@@ -276,6 +278,44 @@ function closeModal() {
     );
   lastFocusedElement?.focus?.();
 }
+
+function applyBackground() {
+  document.body.dataset.background = backgroundKind;
+  document.body.style.setProperty(
+    "--wallpaper-image",
+    backgroundKind === "image" && backgroundImage ? `url("${backgroundImage.replace(/"/g, "\\\"")}")` : "none",
+  );
+  try {
+    localStorage.setItem("daymark-background-kind", backgroundKind);
+    if (backgroundImage) localStorage.setItem("daymark-background-image", backgroundImage);
+    else localStorage.removeItem("daymark-background-image");
+    return true;
+  } catch (error) {
+    console.warn("Could not save wallpaper preference:", error);
+    showToast("Wallpaper applied for now, but the image is too large to save");
+    return false;
+  }
+}
+function setBackgroundOption(kind) {
+  backgroundKind = kind;
+  document.querySelectorAll("[data-background]").forEach((button) => {
+    const active = button.dataset.background === kind;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-checked", String(active));
+  });
+}
+function openCustomize() {
+  lastFocusedElement = document.activeElement;
+  setBackgroundOption(backgroundKind);
+  $("#wallpaper-url").value = backgroundImage.startsWith("data:") ? "" : backgroundImage;
+  $("#customize-backdrop").hidden = false;
+  requestAnimationFrame(() => $("#wallpaper-file").focus());
+}
+function closeCustomize() {
+  $("#customize-backdrop").hidden = true;
+  $("#wallpaper-file").value = "";
+  lastFocusedElement?.focus?.();
+}
 function changeMonth(amount) {
   viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + amount, 1);
   renderCalendar();
@@ -346,6 +386,56 @@ async function fetchFestivals() {
 }
 
 $("#quick-add").addEventListener("click", () => openModal());
+$("#customize-button").addEventListener("click", openCustomize);
+$("#customize-close").addEventListener("click", closeCustomize);
+$("#customize-backdrop").addEventListener("click", (event) => {
+  if (event.target === $("#customize-backdrop")) closeCustomize();
+});
+document.querySelectorAll("[data-background]").forEach((button) =>
+  button.addEventListener("click", () => setBackgroundOption(button.dataset.background)),
+);
+$("#wallpaper-file").addEventListener("change", (event) => {
+  const [file] = event.target.files;
+  if (!file) return;
+  if (!file.type.startsWith("image/")) {
+    showToast("Please select an image file");
+    return;
+  }
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    backgroundImage = reader.result;
+    setBackgroundOption("image");
+    showToast("Wallpaper ready to apply");
+  });
+  reader.readAsDataURL(file);
+});
+$("#apply-wallpaper").addEventListener("click", () => {
+  const url = $("#wallpaper-url").value.trim();
+  if (url) {
+    try {
+      backgroundImage = new URL(url).href;
+    } catch {
+      showToast("Enter a valid image URL");
+      return;
+    }
+    setBackgroundOption("image");
+  }
+  if (backgroundKind === "image" && !backgroundImage) {
+    showToast("Choose an image or enter an image URL");
+    return;
+  }
+  applyBackground();
+  closeCustomize();
+  showToast(backgroundKind === "image" ? "Wallpaper applied" : "Soft gradient restored");
+});
+$("#clear-wallpaper").addEventListener("click", () => {
+  backgroundImage = "";
+  setBackgroundOption("gradient");
+  $("#wallpaper-url").value = "";
+  $("#wallpaper-file").value = "";
+  applyBackground();
+  showToast("Background reset");
+});
 $("#add-for-day").addEventListener("click", () => openModal());
 $("#modal-close").addEventListener("click", closeModal);
 $("#modal-backdrop").addEventListener("click", (event) => {
@@ -415,6 +505,10 @@ $("#entry-form").addEventListener("submit", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !$("#customize-backdrop").hidden) {
+    closeCustomize();
+    return;
+  }
   if (event.key === "Escape" && !$("#detail-backdrop").hidden) {
     closeDetail();
     return;
@@ -442,6 +536,7 @@ if (savedTheme === "dark") {
   document.body.dataset.theme = "dark";
   $("#theme-toggle").innerHTML = '<i data-lucide="sun"></i>';
 }
+applyBackground();
 updateClock();
 setInterval(updateClock, 1000);
 renderCalendar();

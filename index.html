@@ -19,6 +19,14 @@
       <div class="top-actions">
         <button
           class="icon-button"
+          id="customize-button"
+          title="Customize background"
+          aria-label="Customize background"
+        >
+          <i data-lucide="palette"></i>
+        </button>
+        <button
+          class="icon-button"
           id="theme-toggle"
           title="Toggle theme"
           aria-label="Toggle theme"
@@ -84,7 +92,7 @@
         <section class="festival-card">
           <div class="section-title">
             <div>
-              <p class="eyebrow">US CALENDAR</p>
+              <p class="eyebrow">IND CALENDAR</p>
               <h3>Holidays, ready when you are</h3>
             </div>
             <span class="status-pill" id="festival-status">Ready</span>
@@ -229,6 +237,34 @@
           </button>
         </div>
       </article>
+    </div>
+    <div class="modal-backdrop customize-backdrop" id="customize-backdrop" hidden>
+      <section class="customize-modal" role="dialog" aria-modal="true" aria-labelledby="customize-title">
+        <button class="modal-close" id="customize-close" aria-label="Close customization">
+          <i data-lucide="x"></i>
+        </button>
+        <p class="eyebrow">APPEARANCE</p>
+        <h2 id="customize-title">Background wallpaper</h2>
+        <p class="customize-copy">Use the soft blur gradient, upload an image from your device, or set an image URL.</p>
+        <div class="background-options" role="radiogroup" aria-label="Background type">
+          <button type="button" class="background-option active" data-background="gradient" role="radio" aria-checked="true">
+            <i data-lucide="sparkles"></i><span>Soft gradient</span>
+          </button>
+          <button type="button" class="background-option" data-background="image" role="radio" aria-checked="false">
+            <i data-lucide="image"></i><span>Wallpaper</span>
+          </button>
+        </div>
+        <label class="wallpaper-field">Upload from device
+          <input id="wallpaper-file" type="file" accept="image/*" />
+        </label>
+        <label class="wallpaper-field">Image URL
+          <input id="wallpaper-url" type="url" placeholder="https://example.com/wallpaper.jpg" inputmode="url" />
+        </label>
+        <div class="customize-actions">
+          <button type="button" class="outline-button" id="clear-wallpaper">Reset</button>
+          <button type="button" class="primary-button" id="apply-wallpaper">Apply background</button>
+        </div>
+      </section>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>

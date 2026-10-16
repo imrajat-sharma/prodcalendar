@@ -26,8 +26,19 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  background: linear-gradient(135deg, #f1efe6 0%, #e7ecdf 100%);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.9), transparent 30%),
+    radial-gradient(circle at 86% 15%, rgba(196, 213, 190, 0.8), transparent 33%),
+    linear-gradient(135deg, #f4f1ea 0%, #dfe9dc 52%, #e9eee3 100%);
+  background-attachment: fixed;
   overflow-x: hidden;
+}
+body[data-background="image"] {
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(219, 232, 220, 0.56)),
+    var(--wallpaper-image);
+  background-position: center;
+  background-size: cover;
 }
 button,
 input,
@@ -213,7 +224,8 @@ summary:focus-visible {
   --month-header: var(--month-light-header, #f1f7ff);
   overflow: hidden;
   padding: clamp(19px, 3vw, 30px);
-  border-top: 3px solid var(--month-accent);
+  border: 3px solid var(--month-accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--month-accent) 22%, transparent), var(--shadow);
 }
 .calendar-head,
 .section-title {
@@ -325,6 +337,19 @@ summary:focus-visible {
 }
 .day-cell.muted {
   opacity: 0.48;
+}
+.day-cell.sunday {
+  background: rgba(226, 99, 99, 0.105);
+}
+.day-cell.sunday:hover {
+  background: rgba(226, 99, 99, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(194, 69, 69, 0.35);
+}
+.day-cell.sunday .day-number {
+  color: #b34e4e;
+}
+.day-cell.sunday.today .day-number {
+  color: #fff;
 }
 .day-selector {
   display: grid;
@@ -754,6 +779,28 @@ textarea {
 .detail-backdrop {
   z-index: 6;
 }
+.customize-backdrop {
+  z-index: 7;
+}
+.customize-modal {
+  position: relative;
+  width: min(100%, 460px);
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 20px;
+  color: var(--ink);
+  background: var(--surface-solid);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+}
+.customize-modal h2 { margin: 0; font-size: 26px; letter-spacing: -0.04em; }
+.customize-copy { margin: 8px 0 20px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.background-options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 17px; }
+.background-option { display: flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: var(--secondary); cursor: pointer; font-size: 13px; font-weight: 650; }
+.background-option svg { width: 16px; }
+.background-option.active { border-color: var(--blue); color: var(--ink); background: color-mix(in srgb, var(--blue) 14%, var(--surface-solid)); box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue) 16%, transparent); }
+.wallpaper-field { display: block; margin: 0 0 14px; color: var(--ink); font-size: 12px; font-weight: 650; }
+.wallpaper-field input[type="file"] { padding: 8px; }
+.customize-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 21px; }
 .detail-modal {
   position: relative;
   width: min(100%, 640px);
@@ -924,6 +971,11 @@ body[data-theme="dark"] {
     radial-gradient(circle at 78% -15%, #1c3e65 0%, transparent 32%),
     linear-gradient(145deg, #080c13, #101724 65%, #0d1623);
 }
+body[data-theme="dark"][data-background="image"] {
+  background-image:
+    linear-gradient(135deg, rgba(5, 10, 18, 0.76), rgba(12, 24, 39, 0.68)),
+    var(--wallpaper-image);
+}
 body[data-theme="dark"] .calendar-panel {
   --month-tint: color-mix(in srgb, var(--month-accent) 22%, #18202c);
   --month-header: color-mix(in srgb, var(--month-accent) 15%, #202938);
@@ -951,6 +1003,14 @@ body[data-theme="dark"] .calendar-panel,
 body[data-theme="dark"] .agenda-card {
   border-color: rgba(255, 255, 255, 0.08);
 }
+body[data-theme="dark"] .calendar-panel {
+  border-color: color-mix(in srgb, var(--month-accent) 86%, #eef4ff);
+}
+body[data-theme="dark"] .day-cell.sunday {
+  background: rgba(206, 72, 80, 0.13);
+}
+body[data-theme="dark"] .day-cell.sunday .day-number { color: #ff9b9f; }
+body[data-theme="dark"] .day-cell.sunday.today .day-number { color: #fff; }
 body[data-theme="dark"] .day-cell {
   background: rgba(255, 255, 255, 0.012);
 }
