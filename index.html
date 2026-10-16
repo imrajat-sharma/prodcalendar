@@ -1,847 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Happy Days Calendar 2026</title>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-
-    :root {
-      --ink: #34244f;
-      --pink: #ff9bb3;
-      --yellow: #ffd65a;
-      --mint: #78d9b5;
-      --blue: #73cafa;
-      --paper: #fffdf7;
-      --note-color: #fff0f4;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      padding: 28px 16px;
-      color: var(--ink);
-      font-family: "Nunito", "Trebuchet MS", sans-serif;
-      background:
-        radial-gradient(circle at 12% 15%, #ffdfeb 0 7%, transparent 7.2%),
-        radial-gradient(circle at 88% 80%, #d9f7ed 0 9%, transparent 9.2%),
-        #fff4d9;
-    }
-
-    button, textarea {
-      font: inherit;
-    }
-
-    button {
-      color: inherit;
-    }
-
-    .app {
-      width: min(100%, 1000px);
-      margin: 0 auto;
-      padding: 24px;
-      border: 4px solid var(--ink);
-      border-radius: 30px;
-      background: var(--paper);
-      box-shadow: 9px 10px 0 var(--ink);
-    }
-
-    .topbar, .hero, .toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .topbar {
-      margin-bottom: 14px;
-    }
-
-    .brand {
-      font-size: 0.9rem;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .year-pill {
-      padding: 7px 14px;
-      border: 2px solid var(--ink);
-      border-radius: 999px;
-      background: var(--yellow);
-      box-shadow: 3px 3px 0 var(--ink);
-      font-weight: 900;
-    }
-
-    .hero {
-      margin-bottom: 22px;
-      padding: 20px 24px;
-      border: 3px solid var(--ink);
-      border-radius: 24px;
-      background: #e9ddff;
-      box-shadow: 5px 5px 0 var(--ink);
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(1.7rem, 5vw, 2.6rem);
-      line-height: 1.05;
-      font-weight: 900;
-    }
-
-    .hero p {
-      margin: 8px 0 0;
-      font-weight: 700;
-    }
-
-    .hero-art {
-      flex: 0 0 auto;
-      font-size: clamp(2.8rem, 8vw, 4.8rem);
-    }
-
-    .toolbar {
-      margin: 22px 0 14px;
-    }
-
-    .month-title {
-      margin: 0;
-      text-align: center;
-      font-size: clamp(1.2rem, 4vw, 1.8rem);
-      font-weight: 900;
-    }
-
-    .nav-btn, .today-btn, .close-btn, .save-btn {
-      border: 2px solid var(--ink);
-      cursor: pointer;
-      font-weight: 900;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    .nav-btn:hover, .today-btn:hover, .close-btn:hover, .save-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 3px 4px 0 var(--ink);
-    }
-
-    .nav-btn {
-      padding: 9px 13px;
-      border-radius: 13px;
-      background: var(--blue);
-      box-shadow: 2px 3px 0 var(--ink);
-    }
-
-    .today-wrap {
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .today-btn {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--pink);
-      box-shadow: 2px 3px 0 var(--ink);
-    }
-
-    .calendar {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .weekday {
-      padding: 8px 3px;
-      border: 2px solid var(--ink);
-      border-radius: 12px;
-      background: var(--yellow);
-      text-align: center;
-      font-size: 0.83rem;
-      font-weight: 900;
-    }
-
-    .weekday.sunday-heading {
-      background: #ff9bb3;
-      color: #702844;
-    }
-
-    .day {
-      position: relative;
-      display: flex;
-      min-width: 0;
-      min-height: 88px;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 5px;
-      padding: 9px;
-      border: 2px solid var(--ink);
-      border-radius: 15px;
-      background: white;
-      box-shadow: 2px 3px 0 var(--ink);
-      text-align: left;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    .day:hover {
-      z-index: 2;
-      transform: translateY(-3px) rotate(-1deg);
-      box-shadow: 4px 6px 0 var(--ink);
-    }
-
-    .day.sunday {
-      border-color: #a63d60;
-      background: #ffe2eb;
-    }
-
-    .day.sunday .day-number {
-      background: #ff9bb3;
-      color: #702844;
-    }
-
-    .day.today {
-      outline: 3px solid #5b5bd6;
-      outline-offset: 1px;
-    }
-
-    .day-number {
-      display: grid;
-      width: 27px;
-      height: 27px;
-      place-items: center;
-      border: 2px solid var(--ink);
-      border-radius: 50%;
-      background: white;
-      font-weight: 900;
-    }
-
-    .day.today .day-number {
-      background: #cbbaff;
-    }
-
-    .day-emoji {
-      position: absolute;
-      top: 5px;
-      right: 7px;
-      font-size: 1.05rem;
-    }
-
-    .note-preview {
-      display: block;
-      width: 100%;
-      overflow: hidden;
-      color: #514267;
-      font-size: 0.7rem;
-      font-weight: 800;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .empty {
-      min-height: 88px;
-    }
-
-    .bottom-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-top: 20px;
-      padding: 12px 15px;
-      border: 2px dashed var(--ink);
-      border-radius: 16px;
-      background: #f0fbff;
-      font-size: 0.9rem;
-      font-weight: 800;
-    }
-
-    .modal {
-      position: fixed;
-      z-index: 10;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgb(42 29 61 / 55%);
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .note-card {
-      width: min(100%, 480px);
-      max-height: 94vh;
-      overflow-y: auto;
-      padding: 22px;
-      border: 4px solid var(--ink);
-      border-radius: 26px;
-      background: var(--note-color);
-      box-shadow: 8px 9px 0 var(--ink);
-      animation: pop 0.18s ease-out;
-      transition: background 0.15s;
-    }
-
-    @keyframes pop {
-      from { opacity: 0; transform: scale(0.9) rotate(-2deg); }
-      to { opacity: 1; transform: scale(1) rotate(0); }
-    }
-
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .card-top h2 {
-      margin: 0;
-      font-size: 1.35rem;
-      font-weight: 900;
-    }
-
-    .card-hint {
-      margin: 4px 0 0;
-      color: #76648d;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .close-btn {
-      width: 38px;
-      height: 38px;
-      flex: 0 0 auto;
-      border-radius: 50%;
-      background: var(--yellow);
-      box-shadow: 2px 3px 0 var(--ink);
-      font-size: 1.2rem;
-    }
-
-    .picker-label {
-      display: block;
-      margin: 14px 0 8px;
-      font-weight: 900;
-    }
-
-    .emoji-picker, .color-picker {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .emoji-option {
-      width: 42px;
-      height: 42px;
-      border: 2px solid var(--ink);
-      border-radius: 12px;
-      background: white;
-      cursor: pointer;
-      font-size: 1.3rem;
-      transition: transform 0.12s;
-    }
-
-    .emoji-option:hover {
-      transform: scale(1.1) rotate(-5deg);
-    }
-
-    .emoji-option.selected {
-      outline: 3px solid #8d69df;
-      outline-offset: 2px;
-      background: #e9ddff;
-    }
-
-    .color-option {
-      width: 34px;
-      height: 34px;
-      border: 2px solid var(--ink);
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .color-option.selected {
-      outline: 3px solid var(--ink);
-      outline-offset: 2px;
-    }
-
-    .note-input {
-      width: 100%;
-      min-height: 115px;
-      resize: vertical;
-      padding: 13px;
-      border: 2px solid var(--ink);
-      border-radius: 15px;
-      outline: none;
-      background: rgb(255 255 255 / 75%);
-      color: var(--ink);
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .note-input:focus {
-      box-shadow: 0 0 0 4px #e9ddff;
-    }
-
-    .card-actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .save-btn {
-      padding: 10px 17px;
-      border-radius: 12px;
-      background: var(--mint);
-      box-shadow: 2px 3px 0 var(--ink);
-    }
-
-    .delete-btn {
-      padding: 8px 12px;
-      border: 0;
-      border-radius: 10px;
-      background: transparent;
-      color: #9f3453;
-      cursor: pointer;
-      font-weight: 900;
-    }
-
-    .delete-btn:hover {
-      background: rgb(255 255 255 / 60%);
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 12px 8px;
-      }
-
-      .app {
-        padding: 14px;
-        border-width: 3px;
-        border-radius: 22px;
-        box-shadow: 5px 6px 0 var(--ink);
-      }
-
-      .hero {
-        padding: 15px;
-      }
-
-      .hero p {
-        font-size: 0.86rem;
-      }
-
-      .toolbar {
-        gap: 6px;
-      }
-
-      .nav-btn {
-        padding: 8px 9px;
-        font-size: 0.78rem;
-      }
-
-      .calendar {
-        gap: 5px;
-      }
-
-      .weekday {
-        padding: 6px 1px;
-        font-size: 0.7rem;
-      }
-
-      .day {
-        min-height: 68px;
-        padding: 5px;
-        border-radius: 11px;
-      }
-
-      .day-number {
-        width: 24px;
-        height: 24px;
-        font-size: 0.8rem;
-      }
-
-      .day-emoji {
-        top: 4px;
-        right: 4px;
-        font-size: 0.9rem;
-      }
-
-      .note-preview {
-        font-size: 0.62rem;
-      }
-
-      .empty {
-        min-height: 68px;
-      }
-
-      .bottom-row {
-        flex-direction: column;
-        text-align: center;
-        font-size: 0.82rem;
-      }
-    }
-
-    @media (max-width: 380px) {
-      body {
-        padding: 8px 5px;
-      }
-
-      .app {
-        padding: 10px;
-      }
-
-      .brand {
-        font-size: 0.72rem;
-      }
-
-      .year-pill {
-        padding: 5px 9px;
-        font-size: 0.82rem;
-      }
-
-      .day {
-        min-height: 56px;
-        padding: 4px;
-      }
-
-      .empty {
-        min-height: 56px;
-      }
-
-      .note-preview {
-        display: none;
-      }
-
-      .day-emoji {
-        top: 2px;
-        right: 2px;
-        font-size: 0.75rem;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <main class="app">
-    <div class="topbar">
-      <div class="brand">🌈 Happy Days Club</div>
-      <div class="year-pill">2026 ✨</div>
-    </div>
-
-    <header class="hero">
-      <div>
-        <h1>My Happy Calendar!</h1>
-        <p>Little plans, big smiles, and special days 💌</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daymark — Your calendar, your rhythm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="light" data-wallpaper="sand">
+    <div class="wallpaper-glow glow-one"></div>
+    <div class="wallpaper-glow glow-two"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Daymark home">
+        <span class="brand-mark"><i data-lucide="sparkles"></i></span>
+        <span>daymark</span>
+      </a>
+      <div class="clock" aria-label="Current Indian time">
+        <span id="live-time">--:--</span>
+        <span id="live-date">Loading date</span>
       </div>
-      <div class="hero-art" aria-hidden="true">🌞</div>
+      <div class="top-actions">
+        <button class="icon-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
+        <button class="avatar" title="Your profile">R</button>
+      </div>
     </header>
 
-    <div class="toolbar">
-      <button class="nav-btn" id="previous" aria-label="Previous month">◀ Prev</button>
-      <h2 class="month-title" id="monthYear"></h2>
-      <button class="nav-btn" id="next" aria-label="Next month">Next ▶</button>
-    </div>
-
-    <div class="today-wrap">
-      <button class="today-btn" id="goToday">💖 Jump to today</button>
-    </div>
-
-    <section class="calendar" id="calendar" aria-label="Calendar"></section>
-
-    <div class="bottom-row">
-      <span>📝 Tap any day to add a note!</span>
-      <span>Made with ⭐ and sprinkles</span>
-    </div>
-  </main>
-
-  <div class="modal" id="noteModal" role="dialog" aria-modal="true" aria-labelledby="noteDate">
-    <section class="note-card" id="noteCard">
-      <div class="card-top">
-        <div>
-          <h2 id="noteDate">Your note</h2>
-          <p class="card-hint">Choose an icon and a color for your day ✨</p>
+    <main class="app-shell">
+      <section class="hero">
+        <p class="eyebrow">MAKE TODAY COUNT</p>
+        <h1>Plan with<br /><em>intention.</em></h1>
+        <p class="hero-copy">A softer place to hold the things that matter. Add plans, capture thoughts, and stay in rhythm.</p>
+        <button class="primary-button" id="quick-add"><i data-lucide="plus"></i> Add something</button>
+        <div class="quote-card">
+          <i data-lucide="quote"></i>
+          <p id="daily-quote">The secret of getting ahead is getting started.</p>
+          <span>— Mark Twain</span>
         </div>
-        <button class="close-btn" id="closeModal" aria-label="Close">×</button>
-      </div>
+      </section>
 
-      <label class="picker-label">Pick an icon</label>
-      <div class="emoji-picker" id="emojiPicker" aria-label="Choose an icon"></div>
+      <section class="calendar-panel" aria-label="Calendar">
+        <div class="calendar-head">
+          <div>
+            <p class="eyebrow" id="month-kicker">YOUR MONTH</p>
+            <h2 id="month-title">October 2026</h2>
+          </div>
+          <div class="calendar-controls">
+            <button class="icon-button" id="prev-month" aria-label="Previous month"><i data-lucide="chevron-left"></i></button>
+            <button class="today-button" id="today-button">Today</button>
+            <button class="icon-button" id="next-month" aria-label="Next month"><i data-lucide="chevron-right"></i></button>
+          </div>
+        </div>
+        <div class="weekday-row" aria-hidden="true">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <div class="calendar-legend">
+          <span><i class="legend-dot event-dot"></i>Plans</span>
+          <span><i class="legend-dot note-dot"></i>Notes</span>
+          <span><i class="legend-dot festival-dot"></i>Indian festivals</span>
+        </div>
+      </section>
 
-      <label class="picker-label">Pick a note color</label>
-      <div class="color-picker" id="colorPicker" aria-label="Choose a note color"></div>
+      <aside class="side-panel">
+        <section class="agenda-card">
+          <div class="section-title"><div><p class="eyebrow">SELECTED DAY</p><h2 id="selected-date-title">Today</h2></div><button class="icon-button" id="add-for-day" aria-label="Add to selected day"><i data-lucide="plus"></i></button></div>
+          <div class="agenda-list" id="agenda-list"></div>
+        </section>
+        <section class="festival-card">
+          <div class="section-title"><div><p class="eyebrow">INDIA CALENDAR</p><h3>Festival finder</h3></div><span class="status-pill" id="festival-status">Ready</span></div>
+          <p>Bring Indian festivals into your calendar for the month on view.</p>
+          <button class="outline-button" id="fetch-festivals"><i data-lucide="landmark"></i> Fetch festivals</button>
+        </section>
+        <section class="appearance-card">
+          <div class="section-title"><div><p class="eyebrow">PERSONALIZE</p><h3>Set the mood</h3></div></div>
+          <div class="wallpaper-options" aria-label="Choose background wallpaper">
+            <button class="wallpaper sand active" data-wallpaper="sand" title="Warm sand"></button>
+            <button class="wallpaper sky" data-wallpaper="sky" title="Blue sky"></button>
+            <button class="wallpaper bloom" data-wallpaper="bloom" title="Pink bloom"></button>
+            <button class="wallpaper forest" data-wallpaper="forest" title="Forest"></button>
+          </div>
+        </section>
+      </aside>
+    </main>
 
-      <label class="picker-label" for="noteInput">Your note</label>
-      <textarea
-        class="note-input"
-        id="noteInput"
-        maxlength="300"
-        placeholder="Write a reminder, plan, or special-day note... 🦋"
-      ></textarea>
-
-      <div class="card-actions">
-        <button class="delete-btn" id="deleteNote">🗑️ Clear note</button>
-        <button class="save-btn" id="saveNote">Save note 💌</button>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    const calendar = document.getElementById("calendar");
-    const monthYear = document.getElementById("monthYear");
-    const modal = document.getElementById("noteModal");
-    const noteCard = document.getElementById("noteCard");
-    const noteDate = document.getElementById("noteDate");
-    const noteInput = document.getElementById("noteInput");
-    const emojiPicker = document.getElementById("emojiPicker");
-    const colorPicker = document.getElementById("colorPicker");
-
-    const emojis = [
-      "💌", "🎓", "🏫", "📚", "✏️", "🖊️", "📝", "📓",
-      "💻", "🖥️", "⌨️", "📱", "📅", "✅", "💡", "🎨",
-      "🎉", "🎂", "⭐", "❤️", "🌸", "🏆", "💼", "🧪"
-    ];
-
-    const colors = [
-      { name: "Pink", value: "#ffe2eb" },
-      { name: "Red", value: "#ffd6d6" },
-      { name: "Blue", value: "#d9efff" },
-      { name: "Sky blue", value: "#c9f1ff" },
-      { name: "Green", value: "#d9f7df" },
-      { name: "Orange", value: "#ffe2c4" },
-      { name: "Yellow", value: "#fff3bd" },
-      { name: "Purple", value: "#e9ddff" }
-    ];
-
-    let displayedDate = new Date(2026, 0, 1);
-    let selectedDateKey = "";
-    let selectedEmoji = "💌";
-    let selectedColor = colors[0].value;
-
-    function loadNotes() {
-      try {
-        const saved = JSON.parse(localStorage.getItem("happyCalendarNotes") || "{}");
-
-        // Convert notes saved by the earlier version, which stored plain text.
-        for (const [key, value] of Object.entries(saved)) {
-          if (typeof value === "string") {
-            saved[key] = { text: value, emoji: "💌", color: colors[0].value };
-          }
-        }
-        return saved;
-      } catch {
-        return {};
-      }
-    }
-
-    let notes = loadNotes();
-
-    function dateKey(year, month, day) {
-      return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    }
-
-    function saveNotes() {
-      localStorage.setItem("happyCalendarNotes", JSON.stringify(notes));
-    }
-
-    function buildPickers() {
-      emojis.forEach(emoji => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "emoji-option";
-        button.textContent = emoji;
-        button.setAttribute("aria-label", `Use ${emoji} icon`);
-        button.addEventListener("click", () => {
-          selectedEmoji = emoji;
-          updatePickerSelection();
-        });
-        emojiPicker.appendChild(button);
-      });
-
-      colors.forEach(color => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "color-option";
-        button.style.backgroundColor = color.value;
-        button.setAttribute("aria-label", `${color.name} note color`);
-        button.title = color.name;
-        button.dataset.color = color.value;
-        button.addEventListener("click", () => {
-          selectedColor = color.value;
-          noteCard.style.setProperty("--note-color", selectedColor);
-          updatePickerSelection();
-        });
-        colorPicker.appendChild(button);
-      });
-    }
-
-    function updatePickerSelection() {
-      document.querySelectorAll(".emoji-option").forEach(button => {
-        button.classList.toggle("selected", button.textContent === selectedEmoji);
-      });
-
-      document.querySelectorAll(".color-option").forEach(button => {
-        button.classList.toggle("selected", button.dataset.color === selectedColor);
-      });
-    }
-
-    function renderCalendar() {
-      const year = displayedDate.getFullYear();
-      const month = displayedDate.getMonth();
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const today = new Date();
-
-      monthYear.textContent = displayedDate.toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric"
-      });
-
-      calendar.innerHTML = "";
-
-      ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach((name, index) => {
-        const heading = document.createElement("div");
-        heading.className = "weekday";
-        if (index === 0) heading.classList.add("sunday-heading");
-        heading.textContent = name;
-        calendar.appendChild(heading);
-      });
-
-      for (let i = 0; i < firstDay; i++) {
-        const blank = document.createElement("div");
-        blank.className = "empty";
-        calendar.appendChild(blank);
-      }
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        const key = dateKey(year, month, day);
-        const date = new Date(year, month, day);
-        const note = notes[key];
-
-        const button = document.createElement("button");
-        button.className = "day";
-        button.type = "button";
-        button.setAttribute("aria-label", `Add or edit note for ${monthYear.textContent} ${day}`);
-
-        if (date.getDay() === 0) button.classList.add("sunday");
-
-        if (
-          year === today.getFullYear() &&
-          month === today.getMonth() &&
-          day === today.getDate()
-        ) {
-          button.classList.add("today");
-        }
-
-        if (note?.color) {
-          button.style.backgroundColor = note.color;
-        }
-
-        const number = document.createElement("span");
-        number.className = "day-number";
-        number.textContent = day;
-        button.appendChild(number);
-
-        if (note) {
-          const emoji = document.createElement("span");
-          emoji.className = "day-emoji";
-          emoji.textContent = note.emoji || "💌";
-          button.appendChild(emoji);
-
-          if (note.text) {
-            const preview = document.createElement("span");
-            preview.className = "note-preview";
-            preview.textContent = note.text;
-            button.appendChild(preview);
-          }
-        }
-
-        button.addEventListener("click", () => openNote(year, month, day));
-        calendar.appendChild(button);
-      }
-    }
-
-    function openNote(year, month, day) {
-      selectedDateKey = dateKey(year, month, day);
-
-      noteDate.textContent = new Date(year, month, day).toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      });
-
-      const note = notes[selectedDateKey];
-      selectedEmoji = note?.emoji || "💌";
-      selectedColor = note?.color || colors[0].value;
-      noteInput.value = note?.text || "";
-
-      noteCard.style.setProperty("--note-color", selectedColor);
-      updatePickerSelection();
-      modal.classList.add("open");
-      noteInput.focus();
-    }
-
-    function closeNote() {
-      modal.classList.remove("open");
-    }
-
-    document.getElementById("previous").addEventListener("click", () => {
-      displayedDate.setMonth(displayedDate.getMonth() - 1);
-      renderCalendar();
-    });
-
-    document.getElementById("next").addEventListener("click", () => {
-      displayedDate.setMonth(displayedDate.getMonth() + 1);
-      renderCalendar();
-    });
-
-    document.getElementById("goToday").addEventListener("click", () => {
-      const today = new Date();
-      displayedDate = new Date(today.getFullYear(), today.getMonth(), 1);
-      renderCalendar();
-    });
-
-    document.getElementById("saveNote").addEventListener("click", () => {
-      const text = noteInput.value.trim();
-
-      if (text || selectedEmoji !== "💌" || selectedColor !== colors[0].value) {
-        notes[selectedDateKey] = {
-          text,
-          emoji: selectedEmoji,
-          color: selectedColor
-        };
-      } else {
-        delete notes[selectedDateKey];
-      }
-
-      saveNotes();
-      renderCalendar();
-      closeNote();
-    });
-
-    document.getElementById("deleteNote").addEventListener("click", () => {
-      delete notes[selectedDateKey];
-      saveNotes();
-      renderCalendar();
-      closeNote();
-    });
-
-    document.getElementById("closeModal").addEventListener("click", closeNote);
-
-    modal.addEventListener("click", event => {
-      if (event.target === modal) closeNote();
-    });
-
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeNote();
-    });
-
-    buildPickers();
-    renderCalendar();
-  </script>
-</body>
+    <div class="modal-backdrop" id="modal-backdrop" hidden>
+      <section class="entry-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" id="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+        <p class="eyebrow" id="modal-kicker">NEW ENTRY</p>
+        <h2 id="modal-title">Add to your day</h2>
+        <form id="entry-form">
+          <div class="type-tabs" role="tablist">
+            <button type="button" class="type-tab active" data-type="event"><i data-lucide="calendar-days"></i> Event</button>
+            <button type="button" class="type-tab" data-type="note"><i data-lucide="sticky-note"></i> Note</button>
+          </div>
+          <label>What’s on your mind?<input id="entry-title" maxlength="80" required placeholder="e.g. Morning walk" autocomplete="off" /></label>
+          <div class="form-row">
+            <label>Date<input id="entry-date" type="date" required /></label>
+            <label>Time <input id="entry-time" type="time" /></label>
+          </div>
+          <div class="form-row label-row">
+            <label>Label<input id="entry-label" maxlength="24" placeholder="Personal" /></label>
+            <label>Icon
+              <select id="entry-icon">
+                <option value="✦">✦ Star</option><option value="☀️">☀️ Morning</option><option value="💼">💼 Work</option><option value="♥">♥ Wellness</option><option value="✎">✎ Idea</option><option value="☕">☕ Break</option><option value="🎉">🎉 Celebrate</option>
+              </select>
+            </label>
+          </div>
+          <label>Colour</label>
+          <div class="color-picker" id="color-picker">
+            <button type="button" class="color-choice coral active" data-color="coral" aria-label="Coral"></button><button type="button" class="color-choice violet" data-color="violet" aria-label="Violet"></button><button type="button" class="color-choice teal" data-color="teal" aria-label="Teal"></button><button type="button" class="color-choice gold" data-color="gold" aria-label="Gold"></button>
+          </div>
+          <label class="details-label">Details <textarea id="entry-details" maxlength="280" placeholder="A few words for later…"></textarea></label>
+          <button class="primary-button submit-button" type="submit">Save to calendar <i data-lucide="arrow-right"></i></button>
+        </form>
+      </section>
+    </div>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
