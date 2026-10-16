@@ -4,47 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daymark — Your calendar, your rhythm</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-theme="light" data-wallpaper="sand">
-    <div class="wallpaper-glow glow-one"></div>
-    <div class="wallpaper-glow glow-two"></div>
-
     <header class="topbar">
       <a class="brand" href="#" aria-label="Daymark home">
-        <span class="brand-mark"><i data-lucide="sparkles"></i></span>
+        <span class="brand-mark"><i data-lucide="calendar-check-2"></i></span>
         <span>daymark</span>
       </a>
-      <div class="clock" aria-label="Current Indian time">
-        <span id="live-time">--:--</span>
+      <div class="clock" aria-label="Current Indian date and time">
         <span id="live-date">Loading date</span>
+        <span id="live-time">--:--</span>
       </div>
       <div class="top-actions">
         <button class="icon-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
-        <button class="avatar" title="Your profile">R</button>
+        <button class="primary-button compact-add" id="quick-add"><i data-lucide="plus"></i><span>New event</span></button>
       </div>
     </header>
 
     <main class="app-shell">
-      <section class="hero">
-        <p class="eyebrow">MAKE TODAY COUNT</p>
-        <h1>Plan with<br /><em>intention.</em></h1>
-        <p class="hero-copy">A softer place to hold the things that matter. Add plans, capture thoughts, and stay in rhythm.</p>
-        <button class="primary-button" id="quick-add"><i data-lucide="plus"></i> Add something</button>
-        <div class="quote-card">
-          <i data-lucide="quote"></i>
-          <p id="daily-quote">The secret of getting ahead is getting started.</p>
-          <span>— Mark Twain</span>
-        </div>
-      </section>
-
       <section class="calendar-panel" aria-label="Calendar">
         <div class="calendar-head">
           <div>
-            <p class="eyebrow" id="month-kicker">YOUR MONTH</p>
+            <p class="eyebrow" id="month-kicker">MONTH VIEW</p>
             <h2 id="month-title">October 2026</h2>
           </div>
           <div class="calendar-controls">
@@ -57,31 +39,18 @@
           <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
         </div>
         <div class="calendar-grid" id="calendar-grid"></div>
-        <div class="calendar-legend">
-          <span><i class="legend-dot event-dot"></i>Plans</span>
-          <span><i class="legend-dot note-dot"></i>Notes</span>
-          <span><i class="legend-dot festival-dot"></i>Indian festivals</span>
-        </div>
+        <p class="calendar-tip"><i data-lucide="mouse-pointer-2"></i> Select a day to see its schedule. Press <kbd>N</kbd> to add an event.</p>
       </section>
 
       <aside class="side-panel">
         <section class="agenda-card">
-          <div class="section-title"><div><p class="eyebrow">SELECTED DAY</p><h2 id="selected-date-title">Today</h2></div><button class="icon-button" id="add-for-day" aria-label="Add to selected day"><i data-lucide="plus"></i></button></div>
+          <div class="section-title"><div><p class="eyebrow" id="selected-day-label">SELECTED DAY</p><h2 id="selected-date-title">Today</h2></div><button class="icon-button" id="add-for-day" aria-label="Add to selected day" title="Add to this day"><i data-lucide="plus"></i></button></div>
           <div class="agenda-list" id="agenda-list"></div>
         </section>
         <section class="festival-card">
-          <div class="section-title"><div><p class="eyebrow">INDIA CALENDAR</p><h3>Festival finder</h3></div><span class="status-pill" id="festival-status">Ready</span></div>
-          <p>Bring Indian festivals into your calendar for the month on view.</p>
-          <button class="outline-button" id="fetch-festivals"><i data-lucide="landmark"></i> Fetch festivals</button>
-        </section>
-        <section class="appearance-card">
-          <div class="section-title"><div><p class="eyebrow">PERSONALIZE</p><h3>Set the mood</h3></div></div>
-          <div class="wallpaper-options" aria-label="Choose background wallpaper">
-            <button class="wallpaper sand active" data-wallpaper="sand" title="Warm sand"></button>
-            <button class="wallpaper sky" data-wallpaper="sky" title="Blue sky"></button>
-            <button class="wallpaper bloom" data-wallpaper="bloom" title="Pink bloom"></button>
-            <button class="wallpaper forest" data-wallpaper="forest" title="Forest"></button>
-          </div>
+          <div class="section-title"><div><p class="eyebrow">INDIA CALENDAR</p><h3>Holidays, ready when you are</h3></div><span class="status-pill" id="festival-status">Ready</span></div>
+          <p>Add India’s public holidays for the year currently on screen.</p>
+          <button class="outline-button" id="fetch-festivals"><i data-lucide="landmark"></i> Add holidays</button>
         </section>
       </aside>
     </main>
@@ -89,35 +58,49 @@
     <div class="modal-backdrop" id="modal-backdrop" hidden>
       <section class="entry-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <button class="modal-close" id="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
-        <p class="eyebrow" id="modal-kicker">NEW ENTRY</p>
-        <h2 id="modal-title">Add to your day</h2>
+        <p class="eyebrow" id="modal-kicker">NEW EVENT</p>
+        <h2 id="modal-title">What do you need to remember?</h2>
         <form id="entry-form">
           <div class="type-tabs" role="tablist">
             <button type="button" class="type-tab active" data-type="event"><i data-lucide="calendar-days"></i> Event</button>
             <button type="button" class="type-tab" data-type="note"><i data-lucide="sticky-note"></i> Note</button>
           </div>
-          <label>What’s on your mind?<input id="entry-title" maxlength="80" required placeholder="e.g. Morning walk" autocomplete="off" /></label>
+          <label>Title<input id="entry-title" maxlength="80" required placeholder="e.g. Morning walk" autocomplete="off" /></label>
           <div class="form-row">
             <label>Date<input id="entry-date" type="date" required /></label>
             <label>Time <input id="entry-time" type="time" /></label>
           </div>
-          <div class="form-row label-row">
-            <label>Label<input id="entry-label" maxlength="24" placeholder="Personal" /></label>
+          <div class="form-row label-row details-row">
+            <label>Alias<input id="entry-label" maxlength="24" placeholder="e.g. Deep work" /></label>
             <label>Icon
               <select id="entry-icon">
                 <option value="✦">✦ Star</option><option value="☀️">☀️ Morning</option><option value="💼">💼 Work</option><option value="♥">♥ Wellness</option><option value="✎">✎ Idea</option><option value="☕">☕ Break</option><option value="🎉">🎉 Celebrate</option>
               </select>
             </label>
           </div>
-          <label>Colour</label>
+          <label class="color-label">Colour</label>
           <div class="color-picker" id="color-picker">
             <button type="button" class="color-choice coral active" data-color="coral" aria-label="Coral"></button><button type="button" class="color-choice violet" data-color="violet" aria-label="Violet"></button><button type="button" class="color-choice teal" data-color="teal" aria-label="Teal"></button><button type="button" class="color-choice gold" data-color="gold" aria-label="Gold"></button>
           </div>
-          <label class="details-label">Details <textarea id="entry-details" maxlength="280" placeholder="A few words for later…"></textarea></label>
-          <button class="primary-button submit-button" type="submit">Save to calendar <i data-lucide="arrow-right"></i></button>
+          <details class="more-details"><summary>Add details (optional)</summary><label class="details-label">Notes <textarea id="entry-details" maxlength="280" placeholder="A few words for later…"></textarea></label></details>
+          <button class="primary-button submit-button" type="submit">Add event <i data-lucide="arrow-right"></i></button>
         </form>
       </section>
     </div>
+    <div class="modal-backdrop detail-backdrop" id="detail-backdrop" hidden>
+      <article class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+        <button class="modal-close" id="detail-close" aria-label="Close details"><i data-lucide="x"></i></button>
+        <div class="detail-cover" id="detail-cover"><span class="detail-icon" id="detail-icon">✦</span><span class="detail-kind" id="detail-kind">Event</span></div>
+        <div class="detail-content">
+          <p class="eyebrow" id="detail-date">TODAY</p>
+          <h2 id="detail-title">Event title</h2>
+          <div class="detail-meta" id="detail-meta"></div>
+          <div class="detail-body" id="detail-body"></div>
+          <button class="important-button" id="mark-important"><i data-lucide="star"></i><span>Mark as important</span></button>
+        </div>
+      </article>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="app.js"></script>
   </body>
